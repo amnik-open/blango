@@ -21,6 +21,7 @@ import blango_auth.views
 import blog.views
 from django_registration.backends.activation.views import RegistrationView
 from blango_auth.forms import BlangoRegistrationForm
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -36,12 +37,14 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += [
         path("__debug__/", include(debug_toolbar.urls)),
+    ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += [
         path(
     "accounts/register/",
     RegistrationView.as_view(form_class=BlangoRegistrationForm),
     name="django_registration_register",
 ),
         path("accounts/", include("django_registration.backends.activation.urls")),
-    ]
+]
 
 from django.conf import settings
